@@ -1,5 +1,5 @@
 # Spring boot 业务核心组件工具库
-## 1.0.0版本 
+## 1.0.1版本 
 
 作用：
 1. 集成mybatis-plus 、redis 、aop 组件库 。
@@ -9,21 +9,21 @@
    <dependency>
              <groupId>cn.cnaworld.framework</groupId>
              <artifactId>mybatis-plus</artifactId>
-             <version>1.0.0</version>
+             <version>{latest}</version>
    </dependency>
    
    <!--详细用法，请参见：https://github.com/tntfyf/cnaworld-redis-->
    <dependency>
             <groupId>cn.cnaworld.framework</groupId>
             <artifactId>redis</artifactId>
-            <version>1.0.2</version>
+            <version>{latest}</version>
    </dependency>
    
    <!--详细用法，请参见：https://github.com/tntfyf/cnaworld-aop-->
    <dependency>
              <groupId>cn.cnaworld.framework</groupId>
              <artifactId>aop</artifactId>
-             <version>1.0.7</version>
+             <version>{latest}</version>
    </dependency>
    ```
 
@@ -59,7 +59,7 @@
    <dependency>
        <groupId>cn.cnaworld.framework</groupId>
        <artifactId>core</artifactId>
-       <version>1.0.0</version>
+       <version>1.0.1</version>
    </dependency>
    ```
 
@@ -70,12 +70,13 @@
      common-url: #通用地址
        host-name:  #地址名称集合
          baidu:  #自定义地址名称
-           host: "https://www.baidu.com" #自定义地址 
-           path-name:  #路径名称
+           host: "https://www.baidu.com" #自定义地址
+           path-name:  #路径名称集合
              query: "/s?wd=enum" #自定义路径query
              view: "/v?wd=enum" #自定义路径view
-     system-config:  #通用配置
-       system-name: "test-core"  #自定义配置
+     system-config: #通用配置
+       config-name: #配置名称集合
+         sever-code: "test-core"  #自定义配置
    ```
 
 4. 项目启动时进行注册
@@ -91,6 +92,6 @@
    String baidu = CnaCommonUrlUtil.getCommonUrl("baidu");
    String baiduQuery = CnaCommonUrlUtil.getCommonUrl("baidu","query");
    
-   String systemName = CnaSysConfigUtil.getCnaConfigByName("system-name");  
+   String severCode = CnaSysConfigUtil.getCnaConfigByName("sever-code");  
    
    ```

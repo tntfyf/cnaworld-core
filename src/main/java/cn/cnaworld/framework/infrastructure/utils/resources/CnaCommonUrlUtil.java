@@ -51,7 +51,7 @@ public class CnaCommonUrlUtil {
 	 */
 	private void initCache(){
 		if (redissonClient!=null) {
-			localCachedMap = redissonClient.getLocalCachedMap("cnaworld-common-url", LocalCachedMapOptions.defaults());
+			localCachedMap = redissonClient.getLocalCachedMap("cnaworld:common-url", LocalCachedMapOptions.defaults());
 		}else {
 			localCachedMap= new ConcurrentSkipListMap<>();
 		}
@@ -67,8 +67,8 @@ public class CnaCommonUrlUtil {
 	 */
 	private void initCommonUrl(Map<String , String> localCachedMap) {
 
-		if (commonUrlProperties != null && commonUrlProperties.getCommonUrl()!=null && commonUrlProperties.getCommonUrl().getHostName() !=null ) {
-			Map<String, CnaworldCommonUrlProperties.HostEntity> hostEntityMap = commonUrlProperties.getCommonUrl().getHostName();
+		if (commonUrlProperties != null &&  commonUrlProperties.getHostName() !=null ) {
+			Map<String, CnaworldCommonUrlProperties.HostEntity> hostEntityMap = commonUrlProperties.getHostName();
 			if(hostEntityMap != null){
 				hostEntityMap.forEach((k, v)->{
 					String hostValue=v.getHost();
@@ -100,6 +100,7 @@ public class CnaCommonUrlUtil {
 	/**
 	 * 获取第三方公共地址
 	 * @param hostName 地址名称
+	 * @param pathName 路径名称
 	 * @return 完整地址
 	 */
 	public static String getCommonUrl(String hostName, String pathName) {
@@ -109,7 +110,7 @@ public class CnaCommonUrlUtil {
 	/**
 	 * 获取第三方公共地址
 	 * @param hostName 地址名称
-	 * @param pathName 地址后缀
+	 * @param pathName 路径名称
 	 * @return 完整地址
 	 */
 	private static String getCommonUrl(String hostName, String pathName,Map<String , String> localCachedMap) {
@@ -122,7 +123,7 @@ public class CnaCommonUrlUtil {
 			}
 		}
 
-		Map<String, CnaworldCommonUrlProperties.HostEntity> hostEntityMap = commonUrlProperties.getCommonUrl().getHostName();
+		Map<String, CnaworldCommonUrlProperties.HostEntity> hostEntityMap = commonUrlProperties.getHostName();
 		if(hostEntityMap == null){
 			log.error("请检查 cnaworld.common-url.host-name 地址配置");
 			throw new RuntimeException("请检查 cnaworld.common-url.host-name 地址配置");
