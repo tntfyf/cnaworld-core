@@ -64,19 +64,19 @@
 		<dependency>
             <groupId>cn.cnaworld.framework</groupId>
             <artifactId>mybatis-plus</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
 		</dependency>
 
 		<dependency>
   			<groupId>cn.cnaworld.framework</groupId>
   			<artifactId>redis</artifactId>
-  			<version>1.0.2</version>
+  			<version>1.0.3</version>
 		</dependency>
 
 		<dependency>
       		<groupId>cn.cnaworld.framework</groupId>
       		<artifactId>aop</artifactId>
-      		<version>1.0.7</version>
+      		<version>1.0.8</version>
 		</dependency>
 
 		<dependency>
