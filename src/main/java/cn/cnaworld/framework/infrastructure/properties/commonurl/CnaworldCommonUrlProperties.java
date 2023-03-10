@@ -16,30 +16,22 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-@ConfigurationProperties(prefix="cnaworld")
+@ConfigurationProperties(prefix="cnaworld.common-url")
 public class CnaworldCommonUrlProperties {
 
-	private CommonUrlProperties commonUrl;
 
-	@Getter
-	@Setter
-	@ToString
-	public static class CommonUrlProperties {
+    private Map<String,HostEntity> hostName;
 
-		private Map<String,HostEntity> hostName;
+    @Getter
+    @Setter
+    @ToString
+    public static class HostEntity {
 
-	}
+        private String host;
 
-	@Getter
-	@Setter
-	@ToString
-	public static class HostEntity {
+        private Map<String,String> pathName;
 
-		private String host;
-
-		private Map<String,String> pathName;
-
-	}
+    }
 }
 
 

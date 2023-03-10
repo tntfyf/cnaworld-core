@@ -47,7 +47,7 @@ public class CnaSysConfigUtil {
     	systemConfig=systemConfigProperties;
 		log.info("CnaSysConfigUtil  initialized ！");
     }
-    
+
     private static Map<String,LinkedHashMap<String, Object>> yamlCache=new ConcurrentHashMap<>();
 
 	/**
@@ -61,7 +61,7 @@ public class CnaSysConfigUtil {
 	public static String getProfilesActive() {
 		return getApplicationConfigByFullName("spring.profiles.active");
     }
-    
+
 	public static String getApplicationName(){
 		return getApplicationConfigByFullName("spring.application.name");
     }
@@ -191,7 +191,7 @@ public class CnaSysConfigUtil {
 			log.error("获取IP地址1失败"+e1.getMessage(),e1);
 		}
 		ipString = extractedInetAddress();
-		
+
 		return ipString;
 	}
 
@@ -261,12 +261,11 @@ public class CnaSysConfigUtil {
 
 		Object result;
 		if (systemConfig != null){
-			if(systemConfig.getSystemConfig() == null) {
+			if(systemConfig.getConfigName() == null) {
 				log.error("请检查 cnaworld.system-config 配置 : {}",configName);
 				throw new RuntimeException("请检查 cnaworld.system-config 配置 : " + configName);
 			}
-
-			result = systemConfig.getSystemConfig().get(configName);
+			result = systemConfig.getConfigName().get(configName);
 			if(ObjectUtils.isEmpty(result)) {
 				log.error("cnaworld.system-config 没有此配置 : {}",configName);
 				throw new RuntimeException("cnaworld.system-config 没有此配置 : "+configName);
