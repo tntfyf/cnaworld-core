@@ -89,9 +89,11 @@
 5. 调用方式
 
    ```java
+   //获取自定义地址 baidu
    String baidu = CnaCommonUrlUtil.getCommonUrl("baidu");
+   //获取自定义地址 baidu + query
    String baiduQuery = CnaCommonUrlUtil.getCommonUrl("baidu","query");
-   
+   //获取自定义配置 sever-code
    String severCode = CnaSysConfigUtil.getCnaConfigByName("sever-code");  
    
    ```
