@@ -1,4 +1,4 @@
-package cn.cnaworld.framework.infrastructure.common.utils.encryption;
+package cn.cnaworld.framework.infrastructure.utils.encryption;
 
 import lombok.extern.slf4j.Slf4j;
 
