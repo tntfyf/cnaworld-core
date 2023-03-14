@@ -11,7 +11,7 @@
 
 	<groupId>cn.cnaworld.framework</groupId>
 	<artifactId>core</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<name>cnaworld-core</name>
 	<description>cnaworld-core</description>
 	<url>https://github.com/tntfyf/cnaworld-core</url>
@@ -83,6 +83,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.89.Final</version>
 		</dependency>
 
 	</dependencies>

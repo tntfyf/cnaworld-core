@@ -737,7 +737,7 @@ public class CnaHttpClientUtil {
 	 * @param paramsMap 参数
 	 * @return url
 	 */
-	private static String processedUrl(String url, Map<String,Object> paramsMap){
+	public static String processedUrl(String url, Map<String,Object> paramsMap){
 		StringBuilder urlBuffer=new StringBuilder(url);
 		if(paramsMap != null && paramsMap.size()>0) {
 			urlBuffer.append("?");
