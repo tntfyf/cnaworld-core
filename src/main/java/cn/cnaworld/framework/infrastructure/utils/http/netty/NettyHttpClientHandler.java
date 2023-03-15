@@ -2,18 +2,14 @@ package cn.cnaworld.framework.infrastructure.utils.http.netty;
 
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelPromise;
+import io.netty.channel.*;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 
+import java.net.SocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -38,22 +34,20 @@ public class NettyHttpClientHandler extends ChannelInboundHandlerAdapter {
                 String result = buf.toString(CharsetUtil.UTF_8);
                 ChannelPromise channelPromise = ctx.newPromise();
                 channelPromise.setSuccess();
-                AttributeKey<String> key = AttributeKey.valueOf("channelId");
-                if (ctx.channel().hasAttr(key)) {
-                    String channelId = ctx.channel().attr(key).get();
-                    if (ObjectUtils.isNotEmpty(channelId)) {
-                        if(clientHoldMap.containsKey(channelId)){
-                            NettyHttpClientHold nettyHttpClientHold = clientHoldMap.get(channelId);
-                            nettyHttpClientHold.setResult(result);
-                            nettyHttpClientHold.setChannelPromise(channelPromise);
-                            clientHoldMap.remove(channelId);
-                        }
-                    }
+                String channelId = ctx.channel().id().asLongText();
+                if (clientHoldMap.containsKey(channelId)) {
+                    NettyHttpClientHold nettyHttpClientHold = clientHoldMap.get(channelId);
+                    nettyHttpClientHold.setResult(result);
+                    nettyHttpClientHold.setChannelPromise(channelPromise);
+                    clientHoldMap.remove(channelId);
+                }else {
+                    Channel channel = ctx.channel();
+                    SocketAddress socketAddress = channel.remoteAddress();
+                    log.error("CnaNettyHttpClientUtil 发送异常, channelId : {} , socketAddress : {} , result  :  {}", channelId , socketAddress, result);
                 }
             } finally {
                 buf.release();
             }
         }
     }
-
 }

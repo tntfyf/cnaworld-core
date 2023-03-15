@@ -18,7 +18,6 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -204,9 +203,8 @@ public class NettyHttpClient {
     private void handleClientHold(NettyHttpClientHold nettyHttpClientHold, Channel channel) {
         String channelId = channel.id().asLongText();
         nettyHttpClientHold.setChannelId(channelId);
+        nettyHttpClientHold.setBootstrap(null);
         HTTP_CLIENT_HANDLER.getClientHoldMap().put(channelId, nettyHttpClientHold);
-        AttributeKey<String> key = AttributeKey.valueOf("channelId");
-        channel.attr(key).set(channelId);
     }
 
     private HttpMethod getHttpMethod(RestFulBaseType restFulBaseType){
