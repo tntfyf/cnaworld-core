@@ -3,7 +3,6 @@ package cn.cnaworld.framework.infrastructure.utils.http.netty;
 
 import cn.cnaworld.framework.infrastructure.common.statics.enums.RestFulBaseType;
 import cn.cnaworld.framework.infrastructure.common.statics.enums.RestFulEntityType;
-import cn.cnaworld.framework.infrastructure.utils.code.CnaCodeUtil;
 import cn.cnaworld.framework.infrastructure.utils.http.CnaHttpClientUtil;
 import com.alibaba.fastjson.JSON;
 import io.netty.bootstrap.Bootstrap;
@@ -202,12 +201,12 @@ public class NettyHttpClient {
         return request;
     }
 
-    private void handleClientHold(NettyHttpClientHold nettyHttpClientHold, Channel client) {
-        long snowflakeId = CnaCodeUtil.getSnowflakeId();
-        nettyHttpClientHold.setSnowflakeId(snowflakeId);
-        HTTP_CLIENT_HANDLER.getClientHoldMap().put(snowflakeId, nettyHttpClientHold);
-        AttributeKey<Long> key = AttributeKey.valueOf("snowflakeId");
-        client.attr(key).set(snowflakeId);
+    private void handleClientHold(NettyHttpClientHold nettyHttpClientHold, Channel channel) {
+        String channelId = channel.id().asLongText();
+        nettyHttpClientHold.setChannelId(channelId);
+        HTTP_CLIENT_HANDLER.getClientHoldMap().put(channelId, nettyHttpClientHold);
+        AttributeKey<String> key = AttributeKey.valueOf("channelId");
+        channel.attr(key).set(channelId);
     }
 
     private HttpMethod getHttpMethod(RestFulBaseType restFulBaseType){

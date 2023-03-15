@@ -21,7 +21,7 @@ public class NettyHttpClientHold {
 
     private InetSocketAddress inetAddress;
 
-    private long snowflakeId;
+    private String channelId;
 
     private URI uri;
 

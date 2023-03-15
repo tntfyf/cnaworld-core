@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ChannelHandler.Sharable
 public class NettyHttpClientHandler extends ChannelInboundHandlerAdapter {
 
-    private final ConcurrentHashMap<Long, NettyHttpClientHold> clientHoldMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, NettyHttpClientHold> clientHoldMap = new ConcurrentHashMap<>();
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg){
@@ -38,15 +38,15 @@ public class NettyHttpClientHandler extends ChannelInboundHandlerAdapter {
                 String result = buf.toString(CharsetUtil.UTF_8);
                 ChannelPromise channelPromise = ctx.newPromise();
                 channelPromise.setSuccess();
-                AttributeKey<Long> key = AttributeKey.valueOf("snowflakeId");
+                AttributeKey<String> key = AttributeKey.valueOf("channelId");
                 if (ctx.channel().hasAttr(key)) {
-                    long snowflakeId = ctx.channel().attr(key).get();
-                    if (ObjectUtils.isNotEmpty(snowflakeId)) {
-                        if(clientHoldMap.containsKey(snowflakeId)){
-                            NettyHttpClientHold nettyHttpClientHold = clientHoldMap.get(snowflakeId);
+                    String channelId = ctx.channel().attr(key).get();
+                    if (ObjectUtils.isNotEmpty(channelId)) {
+                        if(clientHoldMap.containsKey(channelId)){
+                            NettyHttpClientHold nettyHttpClientHold = clientHoldMap.get(channelId);
                             nettyHttpClientHold.setResult(result);
                             nettyHttpClientHold.setChannelPromise(channelPromise);
-                            clientHoldMap.remove(snowflakeId);
+                            clientHoldMap.remove(channelId);
                         }
                     }
                 }
