@@ -1,5 +1,5 @@
 # Spring boot 业务核心组件工具库
-## 1.0.1版本 
+## 1.0.5版本 
 
 作用：
 1. 集成mybatis-plus 、redis 、aop 组件库 。
@@ -38,6 +38,8 @@
    
    CnaHttpClientUtil：提供restful 请求支持及日志打印 ， 提供忽略ssl认证请求方法
    
+   CnaNettyHttpClientUtil：提供restful 请求支持及日志打印 ， 本地并发压测，10W并发比CnaHttpClientUtil快2分钟。性能更好建议使用
+   
    CnaCommonUrlUtil ：提供统一地址配置管理，可在yaml进行地址管理，缓存采用redisson LocalCachedMap , 一台客户端修改后，会通过redis订阅发布机制同步到其他客户端，实现去中心化轻量级地址配置中心。
    
    CnaSysConfigUtil ：自定义配置工具，配置到yaml的配置可直接通过静态方法获取。提供获取系统IP，ApplicationName，ProfilesActive等通过工具方法。
@@ -59,7 +61,7 @@
    <dependency>
        <groupId>cn.cnaworld.framework</groupId>
        <artifactId>core</artifactId>
-       <version>1.0.1</version>
+       <version>1.0.5</version>
    </dependency>
    ```
 
