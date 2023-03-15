@@ -25,9 +25,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 @Setter
 @ChannelHandler.Sharable
-public class HttpClientHandler extends ChannelInboundHandlerAdapter {
+public class NettyHttpClientHandler extends ChannelInboundHandlerAdapter {
 
-    private final ConcurrentHashMap<Long, ClientHold> clientHoldMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, NettyHttpClientHold> clientHoldMap = new ConcurrentHashMap<>();
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg){
@@ -43,9 +43,9 @@ public class HttpClientHandler extends ChannelInboundHandlerAdapter {
                     long snowflakeId = ctx.channel().attr(key).get();
                     if (ObjectUtils.isNotEmpty(snowflakeId)) {
                         if(clientHoldMap.containsKey(snowflakeId)){
-                            ClientHold clientHold = clientHoldMap.get(snowflakeId);
-                            clientHold.setResult(result);
-                            clientHold.setChannelPromise(channelPromise);
+                            NettyHttpClientHold nettyHttpClientHold = clientHoldMap.get(snowflakeId);
+                            nettyHttpClientHold.setResult(result);
+                            nettyHttpClientHold.setChannelPromise(channelPromise);
                             clientHoldMap.remove(snowflakeId);
                         }
                     }

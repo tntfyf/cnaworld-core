@@ -17,7 +17,7 @@ import java.net.URI;
 @Setter
 @Getter
 @ToString
-public class ClientHold {
+public class NettyHttpClientHold {
 
     private InetSocketAddress inetAddress;
 
