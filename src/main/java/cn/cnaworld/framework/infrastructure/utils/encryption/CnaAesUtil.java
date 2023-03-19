@@ -1,5 +1,6 @@
 package cn.cnaworld.framework.infrastructure.utils.encryption;
 
+import cn.cnaworld.framework.infrastructure.utils.CnaLogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import sun.misc.BASE64Decoder;
@@ -138,7 +139,7 @@ public class CnaAesUtil {
 				return new String(result, DEFAULT_CHARSET);
 			}
 		} catch (Exception e) {
-			log.error("AES 密文处理异常"+e.getMessage(),e);
+			CnaLogUtil.error(log,"AES 密文处理异常"+e.getMessage(),e);
 		}
 		return null;
 	}

@@ -1,5 +1,5 @@
 # Spring boot 集成 netty http 客户端
-## 1.0.5版本 
+## 1.0.8版本 
 
 作用：
 1. 提供常用工具组件库，所有工具方法均可直接静态调用，无需注入。
@@ -36,7 +36,7 @@
    <dependency>
        <groupId>cn.cnaworld.framework</groupId>
        <artifactId>core</artifactId>
-       <version>1.0.5</version>
+       <version>1.0.8</version>
    </dependency>
    ```
 

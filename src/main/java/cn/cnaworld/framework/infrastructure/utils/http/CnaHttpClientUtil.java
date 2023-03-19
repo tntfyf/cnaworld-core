@@ -2,6 +2,7 @@ package cn.cnaworld.framework.infrastructure.utils.http;
 
 import cn.cnaworld.framework.infrastructure.common.statics.enums.RestFulBaseType;
 import cn.cnaworld.framework.infrastructure.common.statics.enums.RestFulEntityType;
+import cn.cnaworld.framework.infrastructure.utils.CnaLogUtil;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -640,9 +641,9 @@ public class CnaHttpClientUtil {
 				break;
 		}
 		processedRequestEntity(httpRequest, headerMap, dto);
-		log.debug("准备发送{}请求，url : {} , dto : {}, paramsMap : {} , headerMap : {}",restFulEntityType,url,dto,paramsMap,headerMap);
+		CnaLogUtil.debug(log,"准备发送{}请求，url : {} , dto : {}, paramsMap : {} , headerMap : {}",restFulEntityType,url,dto,paramsMap,headerMap);
 		String response = getResponse(httpClient, httpRequest);
-		log.debug("{}请求发送完毕，url : {} , dto : {}, paramsMap : {} , headerMap : {} , response : {}",restFulEntityType,url,dto,paramsMap,headerMap,response);
+		CnaLogUtil.debug(log,"{}请求发送完毕，url : {} , dto : {}, paramsMap : {} , headerMap : {} , response : {}",restFulEntityType,url,dto,paramsMap,headerMap,response);
 		return response;
 	}
 
@@ -673,9 +674,9 @@ public class CnaHttpClientUtil {
 				break;
 		}
 		processedRequest(httpRequest, headerMap);
-		log.debug("准备发送{}请求，url : {} , paramsMap : {} , headerMap : {}",restFulBaseType,url,paramsMap,headerMap);
+		CnaLogUtil.debug(log,"准备发送{}请求，url : {} , paramsMap : {} , headerMap : {}",restFulBaseType,url,paramsMap,headerMap);
 		String response = getResponse(httpClient, httpRequest);
-		log.debug("{}请求发送完毕，url : {} , paramsMap : {} , headerMap : {} , response : {}",restFulBaseType,url,paramsMap,headerMap,response);
+		CnaLogUtil.debug(log,"{}请求发送完毕，url : {} , paramsMap : {} , headerMap : {} , response : {}",restFulBaseType,url,paramsMap,headerMap,response);
 		return response;
 	}
 
@@ -694,9 +695,8 @@ public class CnaHttpClientUtil {
 			response = httpClient.execute(httpRequest);
 			return processedResponse(response);
 		} catch (ParseException | IOException e) {
-			log.error("http 请求发送失败 , URL : {} , Caused by : {}",httpRequest.getURI(),e.getMessage(),e);
+			CnaLogUtil.error(log,"http 请求发送失败 , URL : {} , Caused by : {}",httpRequest.getURI(),e.getMessage(),e);
 		} finally {
-
 			closeClient(httpClient, response);
 		}
 		return null;
@@ -807,10 +807,10 @@ public class CnaHttpClientUtil {
 		// 从响应模型中获取响应实体
 		String result= null;
 		HttpEntity responseEntity = response.getEntity();
-		log.debug("响应状态为 : {}" , response.getStatusLine());
+		CnaLogUtil.error(log,"响应状态为 : {}" , response.getStatusLine());
 		if (responseEntity != null) {
 			result= EntityUtils.toString(responseEntity);
-			log.debug("响应内容长度为 : {}， 响应内容为 : {}" , responseEntity.getContentLength() , result);
+			CnaLogUtil.error(log,"响应内容长度为 : {}， 响应内容为 : {}" , responseEntity.getContentLength() , result);
 		}
 		return result;
 	}
@@ -849,6 +849,7 @@ public class CnaHttpClientUtil {
 			};
 			sc.init(null, new TrustManager[]{trustManager},null);
 		} catch (Exception e) {
+			CnaLogUtil.error(log,"HTTP 验证绕过处理失败 ： {}",e.getMessage(),e);
 			throw new RuntimeException("验证绕过处理失败！");
 		}
 		return sc;
@@ -872,7 +873,7 @@ public class CnaHttpClientUtil {
 				response.close();
 			}
 		} catch (IOException e) {
-			log.error("HTTP 资源释放失败 ： {}",e.getMessage(),e);
+			CnaLogUtil.error(log,"HTTP 资源释放失败 ： {}",e.getMessage(),e);
 		}
 	}
 

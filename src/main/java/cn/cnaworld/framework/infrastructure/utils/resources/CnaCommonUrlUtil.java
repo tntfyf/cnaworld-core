@@ -2,6 +2,7 @@ package cn.cnaworld.framework.infrastructure.utils.resources;
 
 
 import cn.cnaworld.framework.infrastructure.properties.commonurl.CnaworldCommonUrlProperties;
+import cn.cnaworld.framework.infrastructure.utils.CnaLogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * 第三方地址配置工具
@@ -40,7 +41,7 @@ public class CnaCommonUrlUtil {
     public void init() {
     	commonUrlProperties = commonUrl;
 		initCache();
-		log.info("CnaCommonUrlUtil  initialized ！");
+		CnaLogUtil.info(log,"CnaCommonUrlUtil  initialized ！");
     }
 
 	/**
@@ -53,7 +54,7 @@ public class CnaCommonUrlUtil {
 		if (redissonClient!=null) {
 			localCachedMap = redissonClient.getLocalCachedMap("cnaworld:common-url", LocalCachedMapOptions.defaults());
 		}else {
-			localCachedMap= new ConcurrentSkipListMap<>();
+			localCachedMap= new HashMap<>();
 		}
 		initCommonUrl(localCachedMap);
 	}
@@ -125,7 +126,7 @@ public class CnaCommonUrlUtil {
 
 		Map<String, CnaworldCommonUrlProperties.HostEntity> hostEntityMap = commonUrlProperties.getHostName();
 		if(hostEntityMap == null){
-			log.error("请检查 cnaworld.common-url.host-name 地址配置");
+			CnaLogUtil.error(log,"请检查 cnaworld.common-url.host-name 地址配置");
 			throw new RuntimeException("请检查 cnaworld.common-url.host-name 地址配置");
 		}
 
@@ -145,20 +146,20 @@ public class CnaCommonUrlUtil {
 								urlkey=urlkey+pathName;
 								urlBuffer.append(path);
 							}else {
-								log.error(" path 配置为空 ：{}",path);
+								CnaLogUtil.error(log," path 配置为空 ：{}",path);
 								throw new RuntimeException(" path 配置为空 ：" + pathName);
 							}
 						}else{
-							log.error("未匹配到 path-name 配置 ：{}",pathName);
+							CnaLogUtil.error(log,"未匹配到 path-name 配置 ：{}",pathName);
 							throw new RuntimeException("未匹配到 path-name 配置 ：" + pathName);
 						}
 					}else {
-						log.error("请检查 cnaworld.common-url.host-name.path-name 地址配置");
+						CnaLogUtil.error(log,"请检查 cnaworld.common-url.host-name.path-name 地址配置");
 						throw new RuntimeException("请检查 cnaworld.common-url.host-name.path-name 地址配置");
 					}
 				}
 			}else {
-				log.error(" host 配置为空 ：{}",pathName);
+				CnaLogUtil.error(log," host 配置为空 ：{}",pathName);
 				throw new RuntimeException(" host 配置为空 ：" + hostName);
 			}
 
@@ -166,7 +167,7 @@ public class CnaCommonUrlUtil {
 			localCachedMap.put(urlkey,urlValue);
 			return urlValue;
 		} else {
-			log.error("未匹配到 host-name 配置 ：{}",hostName);
+			CnaLogUtil.error(log,"未匹配到 host-name 配置 ：{}",hostName);
 			throw new RuntimeException("未匹配到 host-name 配置 ：" + hostName );
 		}
 	}
