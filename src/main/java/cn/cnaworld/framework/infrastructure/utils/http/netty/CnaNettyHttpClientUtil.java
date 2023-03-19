@@ -3,7 +3,6 @@ package cn.cnaworld.framework.infrastructure.utils.http.netty;
 
 import cn.cnaworld.framework.infrastructure.common.statics.enums.RestFulBaseType;
 import cn.cnaworld.framework.infrastructure.common.statics.enums.RestFulEntityType;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import java.util.Map;
  * @date 2023/3/12
  * @since 1.0.0
  */
-@Slf4j
 public class CnaNettyHttpClientUtil {
 
     private static final NettyHttpClient NETTY_HTTP_CLIENT = new NettyHttpClient();

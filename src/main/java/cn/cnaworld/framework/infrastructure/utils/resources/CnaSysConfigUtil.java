@@ -1,6 +1,7 @@
 package cn.cnaworld.framework.infrastructure.utils.resources;
 
 import cn.cnaworld.framework.infrastructure.properties.systemconfig.SystemConfigProperties;
+import cn.cnaworld.framework.infrastructure.utils.CnaLogUtil;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -45,7 +46,7 @@ public class CnaSysConfigUtil {
     public void init() {
 		environment=environmentProperties;
     	systemConfig=systemConfigProperties;
-		log.info("CnaSysConfigUtil  initialized ！");
+		CnaLogUtil.info(log,"CnaSysConfigUtil  initialized ！");
     }
 
     private static Map<String,LinkedHashMap<String, Object>> yamlCache=new ConcurrentHashMap<>();
@@ -58,11 +59,11 @@ public class CnaSysConfigUtil {
 	 * @since 1.0.0
 	 * @return String
 	 */
-	public static String getProfilesActive() {
+	public static <T> T getProfilesActive() {
 		return getApplicationConfigByFullName("spring.profiles.active");
     }
 
-	public static String getApplicationName(){
+	public static <T> T getApplicationName(){
 		return getApplicationConfigByFullName("spring.application.name");
     }
 
@@ -71,32 +72,32 @@ public class CnaSysConfigUtil {
 	 * @param configFullName 完整配置名称 例如：spring.application.name
 	 * @return 属性值
 	 */
-	public static String getApplicationConfigByFullName(String configFullName){
-		String property = "";
+	public static <T> T getApplicationConfigByFullName(String configFullName){
+		T property = null;
 		if (environment != null) {
-			property = environment.getProperty(configFullName);
+			property = (T) environment.getProperty(configFullName);
 		}
-		if(StringUtils.isBlank(property)){
-			property = getApplicationConfig(configFullName,false);
+		if(ObjectUtils.isEmpty(property)){
+			property = (T) getApplicationConfig(configFullName,false);
 		}
 		return property;
-    }
+	}
 
 	/**
 	 * 获取上下文配置中的属性值 通过解析yml的方式，建议使用getEnvironmentValue
 	 * @param environmentName 属性值名称
 	 * @return 属性值
 	 */
-	private static String getApplicationConfig(String environmentName , boolean recursion){
+	private static <T> T getApplicationConfig(String environmentName , boolean recursion){
 		LinkedHashMap<String, Object> sourceMap = null;
 		sourceMap = getSourceMap("application.yml");
 		if (ObjectUtils.isEmpty(sourceMap)) {
 			sourceMap = getSourceMap("application.yaml");
 		}
-		String value = null;
+		T value = null;
 		if(ObjectUtils.isNotEmpty(sourceMap)){
-			value = getString(sourceMap, environmentName);
-			if (StringUtils.isBlank(value) && !"spring.profiles.active".equals(environmentName)) {
+			value = (T) getString(sourceMap, environmentName);
+			if (ObjectUtils.isEmpty(value) && !"spring.profiles.active".equals(environmentName)) {
 				sourceMap=null;
 				String environmentValue = getApplicationConfig("spring.profiles.active",true);
 				if (StringUtils.isNotBlank(environmentValue)) {
@@ -106,7 +107,7 @@ public class CnaSysConfigUtil {
 					}
 				}
 				if(ObjectUtils.isNotEmpty(sourceMap)){
-					value = getString(sourceMap, environmentName);
+					value = (T) getString(sourceMap, environmentName);
 				}
 			}
 		}
@@ -115,7 +116,7 @@ public class CnaSysConfigUtil {
 			Assert.notNull(value, "配置文件中不存在此属性:"+environmentName);
 		}
 		return value;
-    }
+	}
 
 	/**
 	 * 根据yaml文件名称获取配置map
@@ -150,7 +151,7 @@ public class CnaSysConfigUtil {
 	 * @return String
 	 */
 	@SuppressWarnings("unchecked")
-	private static String getString(LinkedHashMap<String, Object> sourceMap, String key) {
+	private static Object getString(LinkedHashMap<String, Object> sourceMap, String key) {
 		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) sourceMap.clone();
 		String[] keys = key.split("[.]");
 		int length = keys.length;
@@ -166,11 +167,7 @@ public class CnaSysConfigUtil {
 				resultValue = value;
 			}
 		}
-		if (resultValue!=null){
-			return resultValue.toString();
-		}else {
-			return null;
-		}
+		return resultValue;
 	}
 
    /**
@@ -187,8 +184,8 @@ public class CnaSysConfigUtil {
 			if(StringUtils.isNotBlank(ipString)) {
 				return ipString;
 			}
-		} catch (UnknownHostException e1) {
-			log.error("获取IP地址1失败"+e1.getMessage(),e1);
+		} catch (UnknownHostException e) {
+			CnaLogUtil.error(log,"获取IP地址1失败"+e.getMessage(),e);
 		}
 		ipString = extractedInetAddress();
 
@@ -243,7 +240,7 @@ public class CnaSysConfigUtil {
 			}
 			throw new SocketException("Can't get our ip address, interfaces are: " + interfaces);
 		} catch (SocketException e) {
-			log.error("获取IP地址2失败"+e.getMessage(),e);
+			CnaLogUtil.error(log,"获取IP地址2失败"+e.getMessage(),e);
 		}
 		return null;
 	}
@@ -262,12 +259,12 @@ public class CnaSysConfigUtil {
 		Object result;
 		if (systemConfig != null){
 			if(systemConfig.getConfigName() == null) {
-				log.error("请检查 cnaworld.system-config 配置 : {}",configName);
+				CnaLogUtil.error(log,"请检查 cnaworld.system-config 配置 : {}",configName);
 				throw new RuntimeException("请检查 cnaworld.system-config 配置 : " + configName);
 			}
 			result = systemConfig.getConfigName().get(configName);
 			if(ObjectUtils.isEmpty(result)) {
-				log.error("cnaworld.system-config 没有此配置 : {}",configName);
+				CnaLogUtil.error(log,"cnaworld.system-config 没有此配置 : {}",configName);
 				throw new RuntimeException("cnaworld.system-config 没有此配置 : "+configName);
 			}
 		}else {

@@ -1,5 +1,6 @@
 package cn.cnaworld.framework.infrastructure.utils.encryption;
 
+import cn.cnaworld.framework.infrastructure.utils.CnaLogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
@@ -43,7 +44,7 @@ public class CnaMd5Util {
 			}
 			str = buf.toString();
 		} catch (Exception e) {
-			log.error("MD5加密失败:{}",str,e);
+			CnaLogUtil.error(log,"MD5加密失败:{}",str,e);
 			throw new RuntimeException("MD5加密失败:"+str);
 		}
 		return str;

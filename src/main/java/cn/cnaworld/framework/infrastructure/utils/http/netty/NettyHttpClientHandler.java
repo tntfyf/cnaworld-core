@@ -1,6 +1,7 @@
 package cn.cnaworld.framework.infrastructure.utils.http.netty;
 
 
+import cn.cnaworld.framework.infrastructure.utils.CnaLogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -43,7 +44,7 @@ public class NettyHttpClientHandler extends ChannelInboundHandlerAdapter {
                 }else {
                     Channel channel = ctx.channel();
                     SocketAddress socketAddress = channel.remoteAddress();
-                    log.error("CnaNettyHttpClientUtil 发送异常, channelId : {} , socketAddress : {} , result  :  {}", channelId , socketAddress, result);
+                    CnaLogUtil.error(log,"CnaNettyHttpClientUtil 发送异常, channelId : {} , socketAddress : {} , result  :  {}", channelId , socketAddress, result);
                 }
             } finally {
                 buf.release();

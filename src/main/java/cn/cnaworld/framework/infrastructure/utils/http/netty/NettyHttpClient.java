@@ -3,6 +3,7 @@ package cn.cnaworld.framework.infrastructure.utils.http.netty;
 
 import cn.cnaworld.framework.infrastructure.common.statics.enums.RestFulBaseType;
 import cn.cnaworld.framework.infrastructure.common.statics.enums.RestFulEntityType;
+import cn.cnaworld.framework.infrastructure.utils.CnaLogUtil;
 import cn.cnaworld.framework.infrastructure.utils.http.CnaHttpClientUtil;
 import com.alibaba.fastjson.JSON;
 import io.netty.bootstrap.Bootstrap;
@@ -44,13 +45,13 @@ public class NettyHttpClient {
         NettyHttpClientHold nettyHttpClientHold;
         try {
             nettyHttpClientHold = initClientHold(url,paramsMap);
-            log.debug("准备发送{}请求，url : {} , dto : {}, paramsMap : {} , headerMap : {}",restFulEntityType,url,dto,paramsMap,headerMap);
+            CnaLogUtil.debug(log,"准备发送{}请求，url : {} , dto : {}, paramsMap : {} , headerMap : {}",restFulEntityType,url,dto,paramsMap,headerMap);
             sendHttpRequest(nettyHttpClientHold,dto,headerMap,restFulEntityType);
             String response = getResponse(url, nettyHttpClientHold);
-            log.debug("{}请求发送完毕，url : {} , paramsMap : {} , headerMap : {} , response : {}", restFulEntityType, url, paramsMap, headerMap,response);
+            CnaLogUtil.debug(log,"{}请求发送完毕，url : {} , paramsMap : {} , headerMap : {} , response : {}", restFulEntityType, url, paramsMap, headerMap,response);
             return response;
         } catch (MalformedURLException | InterruptedException | URISyntaxException | UnknownHostException e) {
-            log.error("CnaNettyHttpClientUtil 发送异常：{}",e.getMessage(),e);
+            CnaLogUtil.error(log,"CnaNettyHttpClientUtil 发送异常：{}",e.getMessage(),e);
             throw new RuntimeException(e);
         }
     }
@@ -59,13 +60,13 @@ public class NettyHttpClient {
         NettyHttpClientHold nettyHttpClientHold;
         try {
             nettyHttpClientHold = initClientHold(url,paramsMap);
-            log.debug("准备发送{}请求，url : {} , paramsMap : {} , headerMap : {}",restFulBaseType,url,paramsMap,headerMap);
+            CnaLogUtil.debug(log,"准备发送{}请求，url : {} , paramsMap : {} , headerMap : {}",restFulBaseType,url,paramsMap,headerMap);
             sendHttpRequest(nettyHttpClientHold,headerMap,restFulBaseType);
             String response = getResponse(url, nettyHttpClientHold);
-            log.debug("{}请求发送完毕，url : {} , paramsMap : {} , headerMap : {} , response : {}", restFulBaseType, url, paramsMap, headerMap,response);
+            CnaLogUtil.debug(log,"{}请求发送完毕，url : {} , paramsMap : {} , headerMap : {} , response : {}", restFulBaseType, url, paramsMap, headerMap,response);
             return response;
         } catch (MalformedURLException | InterruptedException | URISyntaxException | UnknownHostException e) {
-            log.error("CnaNettyHttpClientUtil 发送异常：{}",e.getMessage(),e);
+            CnaLogUtil.error(log,"CnaNettyHttpClientUtil 发送异常：{}",e.getMessage(),e);
             throw new RuntimeException(e);
         }
     }
@@ -77,11 +78,11 @@ public class NettyHttpClient {
                 try {
                     TimeUnit.MILLISECONDS.sleep(1);
                 } catch (InterruptedException e) {
-                    log.error("请求超时，无法得到服务端响应，请重试 ： {}", url);
+                    CnaLogUtil.error(log,"请求超时，无法得到服务端响应，请重试 ： {}", url);
                     throw new RuntimeException("请求超时，无法得到服务端响应，请重试 ：" + url);
                 }
             }else {
-                log.error("请求超时，无法得到服务端响应，请重试 ： {}", url);
+                CnaLogUtil.error(log,"请求超时，无法得到服务端响应，请重试 ： {}", url);
                 throw new RuntimeException("请求超时，无法得到服务端响应，请重试 ：" + url);
             }
         }
