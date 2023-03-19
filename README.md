@@ -1,5 +1,5 @@
 # Spring boot 业务核心组件工具库
-## 1.0.8版本 
+## 1.0.9版本 
 
 作用：
 1. 集成mybatis-plus 、redis 、aop 、 log 组件库 。
@@ -68,7 +68,7 @@
    <dependency>
        <groupId>cn.cnaworld.framework</groupId>
        <artifactId>core</artifactId>
-       <version>1.0.8</version>
+       <version>{latest}</version>
    </dependency>
    ```
 
