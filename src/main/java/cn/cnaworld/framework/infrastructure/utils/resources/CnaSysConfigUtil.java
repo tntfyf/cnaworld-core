@@ -184,8 +184,8 @@ public class CnaSysConfigUtil {
 			if(StringUtils.isNotBlank(ipString)) {
 				return ipString;
 			}
-		} catch (UnknownHostException e1) {
-			log.error("获取IP地址1失败"+e1.getMessage(),e1);
+		} catch (UnknownHostException e) {
+			CnaLogUtil.error(log,"获取IP地址1失败"+e.getMessage(),e);
 		}
 		ipString = extractedInetAddress();
 
