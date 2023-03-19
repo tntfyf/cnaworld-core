@@ -2,7 +2,7 @@
 ## 1.0.8版本 
 
 作用：
-1. 集成mybatis-plus 、redis 、aop 组件库 。
+1. 集成mybatis-plus 、redis 、aop 、 log 组件库 。
 
    ```xml
    <!--详细用法，请参见：https://github.com/tntfyf/cnaworld-mybatis-plus-->
@@ -23,6 +23,13 @@
    <dependency>
              <groupId>cn.cnaworld.framework</groupId>
              <artifactId>aop</artifactId>
+             <version>{latest}</version>
+   </dependency>
+   
+   <!--详细用法，请参见：https://github.com/tntfyf/cnaworld-log-->
+   <dependency>
+             <groupId>cn.cnaworld.framework</groupId>
+             <artifactId>log</artifactId>
              <version>{latest}</version>
    </dependency>
    ```
