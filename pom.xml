@@ -2,26 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-
 	<groupId>cn.cnaworld.framework</groupId>
 	<artifactId>core</artifactId>
-	<version>1.0.9</version>
+	<version>1.1.0</version>
 	<name>cnaworld-core</name>
 	<description>cnaworld-core</description>
 	<url>https://github.com/tntfyf/cnaworld-core</url>
 	<packaging>jar</packaging>
 	<properties>
 		<java.version>1.8</java.version>
-		<cnaworld.log.version>1.0.2</cnaworld.log.version>
-		<cnaworld.aop.version>1.0.11</cnaworld.aop.version>
-		<cnaworld.redis.version>1.0.7</cnaworld.redis.version>
-		<cnaworld.mybatis-plus.version>1.0.6</cnaworld.mybatis-plus.version>
 	</properties>
 
 	<licenses>
@@ -73,50 +62,8 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-            <groupId>cn.cnaworld.framework</groupId>
-            <artifactId>mybatis-plus</artifactId>
-            <version>${cnaworld.mybatis-plus.version}</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-  			<groupId>cn.cnaworld.framework</groupId>
-  			<artifactId>redis</artifactId>
-  			<version>${cnaworld.redis.version}</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-      		<groupId>cn.cnaworld.framework</groupId>
-      		<artifactId>aop</artifactId>
-      		<version>${cnaworld.aop.version}</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>4.1.89.Final</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.83</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 			<scope>compile</scope>
 		</dependency>
 
@@ -128,9 +75,31 @@
 		</dependency>
 
 		<dependency>
-			<groupId>cn.cnaworld.framework</groupId>
-			<artifactId>log</artifactId>
-			<version>${cnaworld.log.version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<optional>true</optional>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<optional>true</optional>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.83</version>
+			<optional>true</optional>
 			<scope>compile</scope>
 		</dependency>
 
@@ -144,6 +113,15 @@
 				<version>2.7.4</version>
 				<configuration>
 					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>

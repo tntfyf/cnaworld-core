@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Map;
+
 /**
  * 自定义系统配置
  * @author Lucifer
