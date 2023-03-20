@@ -1,7 +1,7 @@
 package cn.cnaworld.framework.infrastructure.utils.resources;
 
 import cn.cnaworld.framework.infrastructure.properties.systemconfig.SystemConfigProperties;
-import cn.cnaworld.framework.infrastructure.utils.CnaLogUtil;
+import cn.cnaworld.framework.infrastructure.utils.log.CnaLogUtil;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -46,7 +46,7 @@ public class CnaSysConfigUtil {
     public void init() {
 		environment=environmentProperties;
     	systemConfig=systemConfigProperties;
-		CnaLogUtil.info(log,"CnaSysConfigUtil  initialized ！");
+		CnaLogUtil.info(log,"CnaSysConfigUtil initialized");
     }
 
     private static Map<String,LinkedHashMap<String, Object>> yamlCache=new ConcurrentHashMap<>();
@@ -78,7 +78,23 @@ public class CnaSysConfigUtil {
 			property = (T) environment.getProperty(configFullName);
 		}
 		if(ObjectUtils.isEmpty(property)){
-			property = (T) getApplicationConfig(configFullName,false);
+			property = getApplicationConfig(configFullName,false,true);
+		}
+		return property;
+	}
+
+	/**
+	 * 获取上下文配置中的属性值
+	 * @param configFullName 完整配置名称 例如：spring.application.name
+	 * @return 属性值
+	 */
+	public static <T> T getApplicationConfigByFullName(String configFullName , boolean alwaysReturn){
+		T property = null;
+		if (environment != null) {
+			property = (T) environment.getProperty(configFullName);
+		}
+		if(ObjectUtils.isEmpty(property)){
+			property = getApplicationConfig(configFullName,false,alwaysReturn);
 		}
 		return property;
 	}
@@ -88,7 +104,7 @@ public class CnaSysConfigUtil {
 	 * @param environmentName 属性值名称
 	 * @return 属性值
 	 */
-	private static <T> T getApplicationConfig(String environmentName , boolean recursion){
+	private static <T> T getApplicationConfig(String environmentName , boolean recursion,boolean alwaysReturn){
 		LinkedHashMap<String, Object> sourceMap = null;
 		sourceMap = getSourceMap("application.yml");
 		if (ObjectUtils.isEmpty(sourceMap)) {
@@ -99,7 +115,7 @@ public class CnaSysConfigUtil {
 			value = (T) getString(sourceMap, environmentName);
 			if (ObjectUtils.isEmpty(value) && !"spring.profiles.active".equals(environmentName)) {
 				sourceMap=null;
-				String environmentValue = getApplicationConfig("spring.profiles.active",true);
+				String environmentValue = getApplicationConfig("spring.profiles.active",true,alwaysReturn);
 				if (StringUtils.isNotBlank(environmentValue)) {
 					sourceMap = getSourceMap("application-"+environmentValue+".yml");
 					if (ObjectUtils.isEmpty(sourceMap)) {
@@ -113,7 +129,12 @@ public class CnaSysConfigUtil {
 		}
 
 		if (!recursion) {
-			Assert.notNull(value, "配置文件中不存在此属性:"+environmentName);
+			if (ObjectUtils.isEmpty(value)) {
+				CnaLogUtil.error(log,"配置文件中不存在此属性: {}",environmentName);
+				if(!alwaysReturn){
+					Assert.notNull(value, "配置文件中不存在此属性:"+environmentName);
+				}
+			}
 		}
 		return value;
 	}
@@ -245,6 +266,7 @@ public class CnaSysConfigUtil {
 		return null;
 	}
 
+
 	/**
 	 * 获取 cnaworld.system-config 的配置项
 	 * @author Lucifer
@@ -253,24 +275,37 @@ public class CnaSysConfigUtil {
 	 * @param configName 配置项名称例如：configName
 	 * @return 配置项值
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T getCnaConfigByName(String configName) {
+       return getCnaConfigByName(configName,true);
+	}
 
+	/**
+	 * 获取 cnaworld.system-config 的配置项
+	 * @author Lucifer
+	 * @date 2023/3/9
+	 * @since 1.0.0
+	 * @param configName 配置项名称例如：configName
+	 * @return 配置项值
+	 */
+	public static <T> T getCnaConfigByName(String configName,boolean alwaysReturn) {
 		Object result;
 		if (systemConfig != null){
 			if(systemConfig.getConfigName() == null) {
 				CnaLogUtil.error(log,"请检查 cnaworld.system-config 配置 : {}",configName);
-				throw new RuntimeException("请检查 cnaworld.system-config 配置 : " + configName);
+				if (!alwaysReturn) {
+					Assert.notNull(systemConfig.getConfigName(), "请检查 cnaworld.system-config 配置 : " + configName);
+				}
 			}
 			result = systemConfig.getConfigName().get(configName);
 			if(ObjectUtils.isEmpty(result)) {
 				CnaLogUtil.error(log,"cnaworld.system-config 没有此配置 : {}",configName);
-				throw new RuntimeException("cnaworld.system-config 没有此配置 : "+configName);
+				if (!alwaysReturn) {
+					Assert.notNull(systemConfig.getConfigName(), "请检查 cnaworld.system-config 配置 : " + configName);
+				}
 			}
 		}else {
-			result = getApplicationConfigByFullName("cnaworld.system-config."+configName);
+			result = getApplicationConfigByFullName("cnaworld.system-config.config-name."+configName,alwaysReturn);
 		}
-
 		return (T) result;
 	}
 
