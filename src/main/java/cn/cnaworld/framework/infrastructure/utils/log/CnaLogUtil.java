@@ -23,6 +23,8 @@ import java.util.TreeMap;
 @Slf4j
 public class CnaLogUtil {
 
+    private static boolean initFlag;
+
     @Autowired
     private CnaworldLogProperties cnaworldLog;
 
@@ -31,7 +33,9 @@ public class CnaLogUtil {
     @PostConstruct
     private void init() {
         cnaworldLogProperties=cnaworldLog;
-        initCache();
+        if (!initFlag) {
+            initCache();
+        }
         log.info("CnaLogUtil initialized");
     }
 
@@ -48,6 +52,7 @@ public class CnaLogUtil {
      * @since 1.0.0
      */
     private static void initLogProperties() {
+        initFlag = true;
         List<CnaworldLogProperties.LogProperties> logProperties;
         if (cnaworldLogProperties != null && ObjectUtils.isEmpty(localCachedMap)) {
             logProperties = cnaworldLogProperties.getLogProperties();
@@ -121,8 +126,11 @@ public class CnaLogUtil {
      * @since 1.0.0
      */
     private static void log(Logger log, LogLevel defaultLogLeave, String format, Object... arguments){
+        if (log == null){
+            return;
+        }
         LogLevel logLeave = null;
-        if (ObjectUtils.isEmpty(localCachedMap) && cnaworldLogProperties ==null) {
+        if (!initFlag) {
             initLogProperties();
         }
         boolean updateFlag=false;
