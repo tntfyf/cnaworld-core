@@ -39,7 +39,7 @@ public class CnaLogger {
         log.info("CnaLogUtil initialized");
     }
 
-    private static Map<String, LogLevel> localCachedMap = null;
+    private static volatile Map<String, LogLevel> localCachedMap = null;
 
     private void initCache(){
         initLogProperties();
@@ -51,7 +51,7 @@ public class CnaLogger {
      * @date 2023/3/8
      * @since 1.0.0
      */
-    private static void initLogProperties() {
+    private static synchronized void initLogProperties() {
         initFlag = true;
         List<CnaworldLogProperties.LogProperties> logProperties;
         if (cnaworldLogProperties != null && ObjectUtils.isEmpty(localCachedMap)) {
@@ -70,7 +70,7 @@ public class CnaLogger {
         }
     }
 
-    private static void cacheMap(List<CnaworldLogProperties.LogProperties> logProperties) {
+    private static synchronized void cacheMap(List<CnaworldLogProperties.LogProperties> logProperties) {
         localCachedMap = new TreeMap<>();
         if (ObjectUtils.isNotEmpty(logProperties)) {
             for (CnaworldLogProperties.LogProperties logProperty : logProperties) {
