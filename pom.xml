@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.cnaworld.framework</groupId>
 	<artifactId>core</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 	<name>cnaworld-core</name>
 	<description>cnaworld-core</description>
 	<url>https://github.com/tntfyf/cnaworld-core</url>
@@ -78,13 +78,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
 			<optional>true</optional>
 			<scope>compile</scope>
 		</dependency>
