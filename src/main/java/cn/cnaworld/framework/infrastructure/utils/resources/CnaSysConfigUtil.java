@@ -130,7 +130,9 @@ public class CnaSysConfigUtil {
 
 		if (!recursion) {
 			if (ObjectUtils.isEmpty(value)) {
-				CnaLogUtil.error(log,"配置文件中不存在此属性: {}",environmentName);
+				if(!"cnaworld.log.log-properties".equals(environmentName)){
+					CnaLogUtil.warn(log,"配置文件中不存在此属性: {}",environmentName);
+				}
 				if(!alwaysReturn){
 					Assert.notNull(value, "配置文件中不存在此属性:"+environmentName);
 				}
