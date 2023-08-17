@@ -1,5 +1,5 @@
 # Spring boot 业务核心组件工具库
-## 1.1.2版本 
+## 1.1.3版本 
 
 作用：
 1. 下沉资源层及日志层核心方法
@@ -7,6 +7,10 @@
 2. 提供常用工具组件库，所有工具方法均可直接静态调用，无需注入。
 
    ```
+   encryption ： 加密解密相关
+   
+   code ： 序列号生成相关
+   
    CnaLogUtil ： 可针对包和类切换打印等级日志
    
    CnaSysConfigUtil ：自定义配置工具，配置到yaml的配置可直接通过静态方法获取。提供获取系统IP，ApplicationName，ProfilesActive等通过工具方法。
