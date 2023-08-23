@@ -1,6 +1,4 @@
 # Spring boot 业务核心组件工具库
-## 1.1.3版本 
-
 作用：
 1. 下沉资源层及日志层核心方法
 
@@ -57,9 +55,9 @@
 5. 调用方式
 
    ```java
-CnaLogUtil.trace(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
-CnaLogUtil.debug(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
-CnaLogUtil.info(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
-CnaLogUtil.warn(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
-CnaLogUtil.error(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
+   CnaLogUtil.trace(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
+   CnaLogUtil.debug(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
+   CnaLogUtil.info(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
+   CnaLogUtil.warn(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
+   CnaLogUtil.error(log,"cnaworld aop register CnaworldAopBeanFactoryPostProcessor start");
    ```
