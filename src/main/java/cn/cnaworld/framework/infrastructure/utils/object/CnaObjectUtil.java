@@ -26,17 +26,17 @@ public class CnaObjectUtil extends ObjectUtils {
 
     public static boolean notObjectClass(Class<?> clazz){
         if (Number.class.isAssignableFrom(clazz)) {
-            return false;
+            return true;
         } else if (String.class.isAssignableFrom(clazz)) {
-            return false;
+            return true;
         } else if (Boolean.class.isAssignableFrom(clazz)) {
-            return false;
+            return true;
         } else if (Temporal.class.isAssignableFrom(clazz)) {
-            return false;
+            return true;
         }else if (clazz.isPrimitive()) {
-            return false;
+            return true;
         }else {
-            return !(Date.class.isAssignableFrom(clazz));
+            return Date.class.isAssignableFrom(clazz);
         }
     }
 }
