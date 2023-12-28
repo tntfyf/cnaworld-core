@@ -1,6 +1,7 @@
 package cn.cnaworld.framework.infrastructure.utils.object;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.temporal.Temporal;
 import java.util.Date;
@@ -8,9 +9,9 @@ import java.util.Date;
 /**
  * @author Lucifer
  */
-public class CnaObjectUtil extends ObjectUtils {
+public class CnaCheckUtil {
 
-    public static boolean notObject(Object param){
+    public static boolean isNotObject(Object param){
         if (param instanceof Number) {
             return true;
         } else if (param instanceof String) {
@@ -24,7 +25,7 @@ public class CnaObjectUtil extends ObjectUtils {
         }
     }
 
-    public static boolean notObjectClass(Class<?> clazz){
+    public static boolean isNotObjectClass(Class<?> clazz){
         if (Number.class.isAssignableFrom(clazz)) {
             return true;
         } else if (String.class.isAssignableFrom(clazz)) {
@@ -38,5 +39,17 @@ public class CnaObjectUtil extends ObjectUtils {
         }else {
             return Date.class.isAssignableFrom(clazz);
         }
+    }
+
+    public static <T> boolean isNotNull(T t){
+        if (t instanceof String){
+            return StringUtils.isNotBlank((String) t);
+        }else {
+            return ObjectUtils.isNotEmpty(t);
+        }
+    }
+
+    public static <T> boolean isNull(T t){
+        return !isNotNull(t);
     }
 }
