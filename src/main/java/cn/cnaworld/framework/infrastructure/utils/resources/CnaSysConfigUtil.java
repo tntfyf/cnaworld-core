@@ -2,6 +2,7 @@ package cn.cnaworld.framework.infrastructure.utils.resources;
 
 import cn.cnaworld.framework.infrastructure.properties.systemconfig.SystemConfigProperties;
 import cn.cnaworld.framework.infrastructure.utils.log.CnaLogUtil;
+import cn.cnaworld.framework.infrastructure.utils.object.CnaCheckUtil;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -28,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2023/3/9
  * @since 1.0.0
  */
+@SuppressWarnings({"SingleStatementInBlock", "unchecked"})
 @Setter
 @Slf4j
 public class CnaSysConfigUtil {
@@ -104,26 +106,28 @@ public class CnaSysConfigUtil {
 	 * @param environmentName 属性值名称
 	 * @return 属性值
 	 */
-	private static <T> T getApplicationConfig(String environmentName , boolean recursion,boolean alwaysReturn){
-		LinkedHashMap<String, Object> sourceMap = null;
-		sourceMap = getSourceMap("application.yml");
-		if (ObjectUtils.isEmpty(sourceMap)) {
-			sourceMap = getSourceMap("application.yaml");
-		}
+	private static <T> T getApplicationConfig(String environmentName , boolean recursion,boolean alwaysReturn) {
 		T value = null;
-		if(ObjectUtils.isNotEmpty(sourceMap)){
+		LinkedHashMap<String, Object> sourceMap = getSourceMap("bootstrap.yml");
+		if(CnaCheckUtil.isNotNull(sourceMap)){
 			value = (T) getString(sourceMap, environmentName);
-			if (ObjectUtils.isEmpty(value) && !"spring.profiles.active".equals(environmentName)) {
-				sourceMap=null;
-				String environmentValue = getApplicationConfig("spring.profiles.active",true,alwaysReturn);
-				if (StringUtils.isNotBlank(environmentValue)) {
-					sourceMap = getSourceMap("application-"+environmentValue+".yml");
-					if (ObjectUtils.isEmpty(sourceMap)) {
-						sourceMap = getSourceMap("application-"+environmentValue+".yaml");
+		}
+		if(CnaCheckUtil.isNull(value)){
+			sourceMap = getSourceMap("application.yml");
+			if(CnaCheckUtil.isNotNull(sourceMap)){
+				value = (T) getString(sourceMap, environmentName);
+				if (ObjectUtils.isEmpty(value) && !"spring.profiles.active".equals(environmentName)) {
+					sourceMap=null;
+					String environmentValue = getApplicationConfig("spring.profiles.active",true,alwaysReturn);
+					if (StringUtils.isNotBlank(environmentValue)) {
+						sourceMap = getSourceMap("application-"+environmentValue+".yml");
+						if (ObjectUtils.isEmpty(sourceMap)) {
+							sourceMap = getSourceMap("application-"+environmentValue+".yaml");
+						}
 					}
-				}
-				if(ObjectUtils.isNotEmpty(sourceMap)){
-					value = (T) getString(sourceMap, environmentName);
+					if(ObjectUtils.isNotEmpty(sourceMap)){
+						value = (T) getString(sourceMap, environmentName);
+					}
 				}
 			}
 		}
@@ -138,6 +142,7 @@ public class CnaSysConfigUtil {
 				}
 			}
 		}
+
 		return value;
 	}
 
